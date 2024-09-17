@@ -1,0 +1,65 @@
+#+title: Black Hat Python
+* Book
+Black Hat Python 2nd Edition by Justin Seitz
+** Chapter 1
+*** Virtual Environments
+#+begin_quote
+We will use Python 3 with a virtual environment, which is a self-contained directory tree that includes a Python installation and the set of any extra packages you install. The virtual environment is among the most essential tools for a Python developer. Using one, you can separate projects that have different needs. For example, you might use one virtual environment for projects involving packet inspection and a different one for projects on binary analysis.
+
+By having separate environments, you keep your projects simple and clean. This ensures that each environment can have its own set of dependencies and modules without disrupting any of your other projects.
+#+end_quote
+*** Seting up python virtual environment
+#+begin_src shell
+tim@kali:~$ mkdir bhp
+tim@kali:~$ cd bhp
+tim@kali:~/bhp$ python3 -m venv venv3
+tim@kali:~/bhp$ source venv3/bin/activate
+(venv3) tim@kali:~/bhp$ python
+#+end_src
+*** Installing an IDE
+The author gives several suggestions but I am going with the all powerful and mighty Emacs.
+*** Style
+Code styling PEP8
+https://www.python.org/dev/peps/pep-0008/
+** Chapter 2
+Basic Networking Tools
+*** TCP Client
+#+begin_src python
+import socket
+
+target_host = "www.google.com"
+target_port = 80
+
+# create a socket object
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# connect the client
+client.connect((target_host,target_port))
+
+# send some data
+client.send(b"GET / HTTP/1.1\r\nHost: google.com\r\n\r\n")
+
+# receive some data
+response = client.recv(4096)
+
+print(response.decode())
+client.close()
+#+end_src
+*** UDP Client
+#+begin_src python
+  import socket
+
+  target_host = "127.0.0.1"
+  target_port = 9997
+
+  # create a socket object
+  client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  # send some data
+  client.sendto(b"AAABBBCCC",(target_host,target_port))
+
+  # receive some data
+  data, addr = client.recvfrom(4096)
+
+  print(data.decode())
+  client.close()
+#+end_src
